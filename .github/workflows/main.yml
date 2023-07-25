@@ -1,8 +1,26 @@
-- name: Cloud Functions Deploy
-  uses: google-github-actions/deploy-cloud-functions@v1.0.1
-  with:
-    name: strava-activity-tracker
-    region: europe-west2
-    runtime: go120
-    memory_mb: 128
-    https_trigger_security_level: secure_always
+on:
+  push:
+    branches:
+    - main      
+jobs:
+  job_id:
+    runs-on: 'ubuntu-latest'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - uses: 'actions/checkout@v3'
+
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        workload_identity_provider: 'projects/572142076612/locations/europe-west2/builds/fc3d1eba-e195-4fcd-9d5b-d50871df5d16'
+        service_account: '572142076612-compute@developer.gserviceaccount.com'
+
+    - id: 'deploy'
+      uses: 'google-github-actions/deploy-cloud-functions@v1'
+      with:
+        name: 'strava-activity-tracker'
+        runtime: 'go120'
+        memory_mb: 128
