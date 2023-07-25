@@ -1,0 +1,8 @@
+- name: Cloud Functions Deploy
+  uses: google-github-actions/deploy-cloud-functions@v1.0.1
+  with:
+    name: strava-activity-tracker
+    region: europe-west2
+    runtime: go120
+    memory_mb: 128
+    https_trigger_security_level: secure_always
